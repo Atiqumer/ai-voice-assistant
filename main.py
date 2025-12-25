@@ -19,7 +19,7 @@ def ask_gpt(prompt):
     try:
         # Optimization: Added a more specific system instruction
         response = client.chat.completions.create(
-            model="google/gemini-2.0-flash-exp:free",
+            model="openai/gpt-oss-20b:free",
             messages=[
                 {"role": "system", "content": "You are Alexa, a helpful AI. Keep responses brief and friendly for voice interaction. Avoid using markdown like bold or bullet points in your text."},
                 {"role": "user", "content": prompt}
