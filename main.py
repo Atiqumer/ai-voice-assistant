@@ -5,6 +5,7 @@ import pygame
 import os
 from dotenv import load_dotenv
 import time
+import pyttsx3
 
 # --- INITIALIZATION ---
 load_dotenv()
@@ -29,23 +30,24 @@ def ask_gpt(prompt):
     except Exception as e:
         return f"I'm having trouble connecting to my brain. Error: {e}"
 
+
 def speak(text):
-    filename = "response.mp3"
     try:
-        tts = gTTS(text=text, lang='en')
-        tts.save(filename)
+        # Re-initializing inside the function can sometimes fix "silent" engines
+        engine = pyttsx3.init() 
         
-        pygame.mixer.music.load(filename)
-        pygame.mixer.music.play()
+        # Set the voice (0 is usually male, 1 is female)
+        voices = engine.getProperty('voices')
+        engine.setProperty('voice', voices[0].id) 
         
-        while pygame.mixer.music.get_busy():
-            time.sleep(0.05)
-            
-        pygame.mixer.music.unload() # Critical for file deletion
-        if os.path.exists(filename):
-            os.remove(filename)
+        print(f"Alexa: {text}")
+        engine.say(text)
+        engine.runAndWait() # Ensure parentheses are here!
+        
+        # Optional: stop the engine after speaking to release the audio driver
+        engine.stop() 
     except Exception as e:
-        print(f"TTS Error: {e}")
+        print(f"Pyttsx3 Error: {e}")
 
 def listen():
     r = sr.Recognizer()
@@ -84,5 +86,5 @@ if __name__ == "__main__":
             
             if clean_command:
                 answer = ask_gpt(clean_command)
-                print(f"Alexa: {answer}")
+                # print(f"Alexa: {answer}")
                 speak(answer)
