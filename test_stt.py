@@ -16,11 +16,11 @@ def listen():
         r.adjust_for_ambient_noise(source, duration=0.5)
         
         try:
-            # 3. Listen with a timeout so it doesn't wait forever
+            #  Listen with a timeout so it doesn't wait forever
             audio = r.listen(source, timeout=5, phrase_time_limit=10)
             print("[Alexa] Recognizing...")
             
-            # 4. Transcription
+            #  Transcription
             # Changed language to 'en-in' for better Indian accent support if needed
             query = r.recognize_google(audio, language='en-in')
             print(f"You said: {query}")
