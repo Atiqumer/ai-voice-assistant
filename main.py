@@ -5,7 +5,7 @@ import os
 from dotenv import load_dotenv
 import time
 import pyttsx3
-from AppOpener import open as open_app
+from AppOpener import open as open_app, close as close_app
 import webbrowser
 
 # --- INITIALIZATION ---
@@ -24,6 +24,14 @@ def process_command(query):
         print(f"Opening {app_name}...")
         open_app(app_name, match_closest=True) # match_closest handles typos
         return f"Opening {app_name} for you."
+    
+    elif "close" in query:
+        app_name = query.replace("close", "").strip()
+        print(f"Closing {app_name}...")
+        # close_app can close multiple apps if comma-separated, 
+        # but here we handle one at a time for simplicity
+        close_app(app_name, match_closest=True)
+        return f"Closing {app_name}."
     
     # Feature: Open Websites
     elif "open google" in query:
