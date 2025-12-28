@@ -3,10 +3,11 @@ from openai import OpenAI
 import pygame
 import os
 from dotenv import load_dotenv
-import time
 import pyttsx3
 from AppOpener import open as open_app, close as close_app
 import webbrowser
+import datetime
+from PIL import ImageGrab
 
 # --- INITIALIZATION ---
 load_dotenv()
@@ -22,28 +23,36 @@ def process_command(query):
     if "open" in query:
         app_name = query.replace("open", "").strip()
         print(f"Opening {app_name}...")
-        open_app(app_name, match_closest=True) # match_closest handles typos
+        open_app(app_name, match_closest=True)
         return f"Opening {app_name} for you."
     
     elif "close" in query:
         app_name = query.replace("close", "").strip()
         print(f"Closing {app_name}...")
-        # close_app can close multiple apps if comma-separated, 
-        # but here we handle one at a time for simplicity
         close_app(app_name, match_closest=True)
         return f"Closing {app_name}."
     
-    # Feature: Open Websites
+    elif "take a screenshot" in query or "capture my screen" in query:
+        try:
+            timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = f"screenshot_{timestamp}.png"
+            screenshot = ImageGrab.grab()
+            screenshot.save(filename)
+            return f"Screenshot saved."
+        except Exception as e:
+            return f"Sorry, I couldn't take a screenshot. Error: {e}"
+
+
     elif "open google" in query:
         webbrowser.open("https://www.google.com")
         return "Opening Google."
     
-    return None # Return None if it's not a system command
+    return None
 
 def ask_gpt(prompt):
     try:
         response = client.chat.completions.create(
-            model="openai/gpt-3.5-turbo", # Fixed model name for stability
+            model="openai/gpt-3.5-turbo", 
             messages=[
                 {"role": "system", "content": "You are Alexa, a helpful AI. Keep responses brief and friendly for voice interaction."},
                 {"role": "user", "content": prompt}
