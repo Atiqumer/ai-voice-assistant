@@ -33,6 +33,6 @@ def speak(text):
         print(f"Error in TTS: {e}")
 
 if __name__ == "__main__":
-    print("[Alexa] Speaking...")
+    print("[Nexa] Speaking...")
     speak("System online. All modules are functional.")
     print("[System] Done!")

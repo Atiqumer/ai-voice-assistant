@@ -54,7 +54,7 @@ def ask_gpt(prompt):
         response = client.chat.completions.create(
             model="openai/gpt-3.5-turbo", 
             messages=[
-                {"role": "system", "content": "You are Alexa, a helpful AI. Keep responses brief and friendly for voice interaction."},
+                {"role": "system", "content": "You are Nexa, a helpful AI. Keep responses brief and friendly for voice interaction."},
                 {"role": "user", "content": prompt}
             ]
         )
@@ -67,7 +67,7 @@ def speak(text):
         engine = pyttsx3.init() 
         voices = engine.getProperty('voices')
         engine.setProperty('voice', voices[0].id) 
-        print(f"Alexa: {text}")
+        print(f"Nexa: {text}")
         engine.say(text)
         engine.runAndWait()
         engine.stop() 
@@ -80,7 +80,7 @@ def listen():
     r.pause_threshold = 0.8 
     
     with sr.Microphone() as source:
-        print("\n[Status] Waiting for 'Alexa'...")
+        print("\n[Status] Waiting for 'Nexa'...")
         r.adjust_for_ambient_noise(source, duration=0.4)
         audio = r.listen(source)
     try:
@@ -96,8 +96,8 @@ if __name__ == "__main__":
     while True:
         command = listen()
 
-        if "alexa" in command:
-            clean_command = command.replace("alexa", "").strip()
+        if "nexa" in command:
+            clean_command = command.replace("nexa", "").strip()
             
             if not clean_command:
                 speak("Yes? I'm listening.")

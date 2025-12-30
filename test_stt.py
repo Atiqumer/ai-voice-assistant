@@ -10,7 +10,7 @@ def listen():
     r.pause_threshold = 0.8  
 
     with sr.Microphone() as source:
-        print("\n[Alexa] Listening...")
+        print("\n[Nexa] Listening...")
         
         # Calibration (Essential for accuracy)
         r.adjust_for_ambient_noise(source, duration=0.5)
@@ -18,7 +18,7 @@ def listen():
         try:
             #  Listen with a timeout so it doesn't wait forever
             audio = r.listen(source, timeout=5, phrase_time_limit=10)
-            print("[Alexa] Recognizing...")
+            print("[Nexa] Recognizing...")
             
             #  Transcription
             # Changed language to 'en-in' for better Indian accent support if needed
